@@ -1,0 +1,23 @@
+{
+  "name": "be-a1",
+  "version": "1.0.0",
+  "description": "Assignment 1",
+  "homepage": "https://github.com/umarifti/BE-A1#readme",
+  "bugs": {
+    "url": "https://github.com/umarifti/BE-A1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umarifti/BE-A1.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
