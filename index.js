@@ -63,6 +63,59 @@ app.post('/tasks', (req, res) => {
   res.status(201).json(newTask);
 });
 
+app.put('/tasks/:id', (req, res) => {
+  const taskId = Number(req.params.id);
+  const task = tasks.find((item) => item.id === taskId);
+
+  if (!task) {
+    return res.status(404).json({
+      error: `Task ${req.params.id} not found`,
+    });
+  }
+
+  const { title, done } = req.body || {};
+  const hasTitle = title !== undefined;
+  const hasDone = done !== undefined;
+
+  if (!hasTitle && !hasDone) {
+    return res.status(400).json({
+      error: 'request body must include title and/or done',
+    });
+  }
+
+  if (hasTitle && (typeof title !== 'string' || title.trim() === '')) {
+    return res.status(400).json({
+      error: 'title must be a non-empty string',
+    });
+  }
+
+  if (hasDone && typeof done !== 'boolean') {
+    return res.status(400).json({
+      error: 'done must be a boolean',
+    });
+  }
+
+  if (hasTitle) task.title = title;
+  if (hasDone) task.done = done;
+
+  res.json(task);
+});
+
+app.delete('/tasks/:id', (req, res) => {
+  const taskId = Number(req.params.id);
+  const taskIndex = tasks.findIndex((item) => item.id === taskId);
+
+  if (taskIndex === -1) {
+    return res.status(404).json({
+      error: `Task ${req.params.id} not found`,
+    });
+  }
+
+  tasks.splice(taskIndex, 1);
+
+  res.status(204).end();
+});
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
