@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+
 const tasks = [
   { id: 1, title: 'Set up the API', done: true },
   { id: 2, title: 'Add task routes', done: true },
@@ -37,6 +39,28 @@ app.get('/tasks/:id', (req, res) => {
   }
 
   res.json(task);
+});
+
+app.post('/tasks', (req, res) => {
+  const { title } = req.body || {};
+
+  if (!title || typeof title !== 'string' || title.trim() === '') {
+    return res.status(400).json({
+      error: 'title is required and must be a non-empty string',
+    });
+  }
+
+  const nextId = tasks.length > 0 ? Math.max(...tasks.map((t) => t.id)) + 1 : 1;
+
+  const newTask = {
+    id: nextId,
+    title,
+    done: false,
+  };
+
+  tasks.push(newTask);
+
+  res.status(201).json(newTask);
 });
 
 app.listen(port, () => {
